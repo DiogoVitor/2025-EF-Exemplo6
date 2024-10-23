@@ -9,8 +9,8 @@ public class Livro
     public string ISBN { get; set; }
     public string Titulo { get; set; }
     public int? Paginas { get; set; }
-    public Autor Autor { get; set; }
-    public ICollection<LivroGenero> Generos { get; set; }
+    public virtual Autor Autor { get; set; }
+    public virtual ICollection<LivroGenero> Generos { get; set; }
 }
 
 public class LivroConfiguration : IEntityTypeConfiguration<Livro>

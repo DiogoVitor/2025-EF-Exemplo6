@@ -8,8 +8,8 @@ public class Autor
     public int AutorID { get; set; }
     public string Nome { get; set; }
     public DateOnly? DataNascimento { get; set; }
-    public Endereco Endereco { get; set; }
-    public ICollection<Livro> Livros { get; set; }
+    public virtual Endereco Endereco { get; set; }
+    public virtual ICollection<Livro> Livros { get; set; }
 }
 
 public class AutorConfiguration : IEntityTypeConfiguration<Autor>

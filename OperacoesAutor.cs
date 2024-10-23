@@ -32,10 +32,46 @@ public static class OperacoesAutor
         Console.WriteLine("Autor adicionado!");
     }
 
+    public static void ListarExplict()
+    {
+        using var db = new AplicacaoDbContext();
+        // desligando acompanhamento de objetos NA CONSULTA
+        // Explicit loading de propriedades relacionadas
+        var autores = db.Autor.ToList();
+        Console.WriteLine("Nome, DataNascimento, Endereço");
+        foreach (var autor in autores)
+        {
+            // Se a entidade Endereco associada à entidade Autor atual
+            // não estiver carregada...
+            if (!db.Entry(autor).Reference(p  => p.Endereco).IsLoaded)
+                // Faça a carga dela...
+                db.Entry(autor).Reference(p => p.Endereco).Load();
+            Console.WriteLine($"{autor.Nome}, {autor.DataNascimento.ToString()}," +
+                              $" {autor.Endereco.Logradouro}, {autor.Endereco.Cidade} " +
+                              $"({autor.Endereco.UF}), {autor.Endereco.CEP}");
+        }
+    }
+
+    public static void ListarLazy()
+    {
+        using var db = new AplicacaoDbContext();
+        // desligando acompanhamento de objetos NA CONSULTA
+        // Lazy loading de propriedades relacionadas
+        var autores = db.Autor.ToList();
+        Console.WriteLine("Nome, DataNascimento, Endereço");
+        foreach (var autor in autores)
+        {
+            Console.WriteLine($"{autor.Nome}, {autor.DataNascimento.ToString()}," +
+                              $" {autor.Endereco.Logradouro}, {autor.Endereco.Cidade} " +
+                              $"({autor.Endereco.UF}), {autor.Endereco.CEP}");
+        }
+    }
+
     public static void Listar()
     {
         using var db = new AplicacaoDbContext();
         // desligando acompanhamento de objetos NA CONSULTA
+        // Eager loading de propriedades relacionadas
         var autores = db.Autor
             .AsNoTracking().
             Include(p => p.Endereco);
